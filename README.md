@@ -1,5 +1,5 @@
  
- # Chapter 1.  Getting Started
+ <h1>Chapter 1.  Getting Started</h1>
 
  ## This notebook will help you understand the basic capabilities of the programmatic access using Metabolite Atlas.
 
