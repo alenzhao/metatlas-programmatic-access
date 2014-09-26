@@ -1,1 +1,1 @@
- [Visit GitHub!](www.github.com)
+ [Read the notebook online here!](http://nbviewer.ipython.org/github/benbowen/metatlas-programmatic-access/blob/master/GettingStarted.ipynb)
