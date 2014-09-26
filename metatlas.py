@@ -23,6 +23,11 @@ def getEICForCompound(compound,myArray,runId,rtTol,client):
 	data = np.asarray(json.loads(r.content))
 	xdata    = data[abs(data[:,0]-rtPeak)<rtTol,0]
 	ydata    = data[abs(data[:,0]-rtPeak)<rtTol,1]
+	peakArea = data[(data[:,0]>rtMin) & (data[:,0]<rtMax),1]
+	if len(peakArea)>0:
+		peakArea = sum(peakArea)
+	else:
+		peakArea = 0
 	if len(xdata)>0:
 		iMin = min(ydata)
 		ydata = ydata - iMin
@@ -30,7 +35,7 @@ def getEICForCompound(compound,myArray,runId,rtTol,client):
 		ydata = ydata / iMax
 	else:
 		iMax = 0
-	return {'eic':data,'xdata':xdata,'ydata':ydata,'name':compound[u'name'],'iMax':iMax}
+	return {'eic':data,'xdata':xdata,'ydata':ydata,'name':compound[u'name'],'iMax':iMax,'peakArea':peakArea}
 
 def createChromatogramPlots(data,compound,fitResult,ax):
 	ax.plot(data['xdata'],data['ydata']*data['iMax'],'k-',data['xdata'], fitfunc(fitResult, data['xdata'])*data['iMax'],'r-',linewidth=2.0)
@@ -67,4 +72,4 @@ def errfunc(p,x,y,rtPeak):
 	if (abs(p[2]) > 0.3) or (abs(p[3]) > 0.3) or (abs(p[2]) < 0.01) or (abs(p[3]) < 0.01):
 		return 1e100
 	else:
-		return np.multiply((y-fitfunc(p,x)),np.exp(-0.5*((x-rtPeak)/0.2)**2))
+		return np.multiply((y-fitfunc(p,x)),np.exp(-0.5*((x-rtPeak)/0.1)**2))
